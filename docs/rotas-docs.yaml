@@ -1,0 +1,58 @@
+swagger: "2.0"
+info:
+  description: "API para cadastro de tasks"
+  version: "1.0.0"
+  title: "API Sword"
+
+schemes:
+  - "http"
+
+securityDefinitions:
+  token:
+    type: "apiKey"
+    name: "Authorization"
+    in: header
+
+tags:
+  - name: "List users"
+    description: "List all system users"  
+
+paths:
+  /user/:
+    get:
+      tags:
+        - "Users"
+      summary: "List all system users"
+      operationId: "consultUser"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Consultation performed successfully"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/InfoResponseConsultUser"
+        "400":
+          description: "Repository | nenhum retorno encontrado"
+        "401":
+          description: "Unauthorized"
+      security:
+        - token: []
+
+definitions:
+
+  InfoResponseConsultUser:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int32"
+        example: 1
+      descricao:
+        type: "string"
+        example: "Leonardo"  
+  
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
