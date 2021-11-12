@@ -1,7 +1,7 @@
 const { BadRequest } = require("../../common/ExceptionHandler");
 const UserRepository = require("../repository/user");
 
-class CredorService {
+class UserService {
   constructor () {
     this.userRepository = new UserRepository();
   }  
@@ -12,4 +12,4 @@ class CredorService {
   }
 }
 
-module.exports = CredorService;
+module.exports = UserService;
