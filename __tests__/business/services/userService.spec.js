@@ -2,12 +2,12 @@ const { BadRequest } = require("../../../src/common/ExceptionHandler");
 const UserService = require("../../../src/business/services/user");
 const userService = new UserService();
 
-describe("credorService", () => {
+describe("UserService", () => {
   describe("- SUCESS CASES -", () => {    
     it("consultUser | Ensure that the user was successfully consulted", async () => {
       const userRepositoryReturnMock = {
         id: 1,
-        descricao: "Leonardo"
+        name: "Leonardo"
       };
 
       const createUserRepositoryMock = () => userRepositoryReturnMock;
