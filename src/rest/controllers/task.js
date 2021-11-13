@@ -37,9 +37,20 @@ class TaskController {
         id: req.body.id,
         description: req.body.description
       }
-      const resultInsertTask = await this.taskService.updateTask(objectTask); 
+      const resultUpdateTask = await this.taskService.updateTask(objectTask); 
 
-      res.send(resultInsertTask);
+      res.send(resultUpdateTask);
+
+      next();
+    } catch (error) { next(error); }
+  }
+
+  async deleteTask (req, res, next) {
+    try {
+      const idTask = req.params.id      
+      const resultDeleteTask = await this.taskService.deleteTask(parseInt(idTask)); 
+
+      res.send(resultDeleteTask);
 
       next();
     } catch (error) { next(error); }
