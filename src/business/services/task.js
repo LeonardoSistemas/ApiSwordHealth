@@ -41,6 +41,14 @@ class TaskService {
       }
       return true
   }
+
+  async deleteTask (idTask) {
+    
+    if(!idTask)
+      return new NotFoundError("Delete Task Services | idTask value is invalid").message;
+    const resultDeleteTask = await this.taskRepository.deleteTask(parseInt(idTask));
+    return resultDeleteTask;
+  }
 }
 
 module.exports = TaskService;
