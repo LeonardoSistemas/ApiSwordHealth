@@ -14,6 +14,21 @@ class TaskController {
       next();
     } catch (error) { next(error); }
   }
+
+  async insertTask (req, res, next) {
+    try {
+
+      let objectTask = {
+        id: req.body.id,
+        description: req.body.description
+      }
+      const resultInsertTask = await this.taskService.insertTask(objectTask); 
+
+      res.send(resultInsertTask);
+
+      next();
+    } catch (error) { next(error); }
+  }
 }
 
 module.exports = TaskController;
