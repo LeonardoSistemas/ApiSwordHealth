@@ -1,14 +1,14 @@
 const { idSchema } = require("./idSchema");
-const { postCreateRuleSchema } = require("./PostCreateRules");
-const { putUpdateRuleSchema } = require("./PutUpdateRule");
+const { postCreateTaskSchema } = require("./PostCreateTask");
+const { putUpdateTaskSchema } = require("./PutUpdateTask");
 
 const { bodyValidateRequest, paramValidateRequest } = require("../middlewares/ValidationMiddleware");
 
 module.exports = {
   idSchema: (req, res, next) =>
     paramValidateRequest(req, res, next, idSchema),
-  PostCreateRule: (req, res, next) =>
-    bodyValidateRequest(req, res, next, postCreateRuleSchema),
-  PutUpdateRule: (req, res, next) =>
-    bodyValidateRequest(req, res, next, putUpdateRuleSchema)
+  PostCreateTask: (req, res, next) =>
+    bodyValidateRequest(req, res, next, postCreateTaskSchema),
+  PutUpdateTask: (req, res, next) =>
+    bodyValidateRequest(req, res, next, putUpdateTaskSchema)
 };
