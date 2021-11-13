@@ -28,6 +28,10 @@ class TaskRepository {
     if (!returnValidateObject)
       return new BadRequest("Insert Task Repository | the task object is not in a correct format").message;
 
+    const returnValidateDescriptionLength = await this.validateDescriptionLength(objectTask);
+    if (!returnValidateDescriptionLength)
+      return new BadRequest("Insert Task Repository | the description size is too big").message;
+
     arrayTask.push(objectTask)
     return { rowAffect: 1 };
   }
@@ -37,6 +41,10 @@ class TaskRepository {
     const returnValidateObject = await this.validateObjectTask(objectTask);
     if (!returnValidateObject)
       return new BadRequest("Update Task Repository | the task object is not in a correct format").message;
+
+    const returnValidateDescriptionLength = await this.validateDescriptionLength(objectTask);
+    if (!returnValidateDescriptionLength)
+      return new BadRequest("Update Task Repository | the description size is too big").message;
 
     const returnConsultTaskByID = await this.consultTaskByID(objectTask)
     if (!returnConsultTaskByID)
@@ -56,6 +64,15 @@ class TaskRepository {
       return false
     }
     return true
+  }
+
+  async validateDescriptionLength(objectTask) {
+    const { description } = objectTask
+    if (description.length > 2500) {
+      return false
+    }
+    return true
+
   }
 
   async deleteTask(idTask) {
