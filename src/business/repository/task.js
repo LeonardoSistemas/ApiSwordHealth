@@ -57,6 +57,18 @@ class TaskRepository {
     }
     return true
   }
+
+  async deleteTask(idTask) {
+
+    if (!idTask)
+      return new BadRequest("Delete Task Repository | idTask value is invalid").message;
+
+    arrayTask.forEach((elemento, indice) => {
+      if (elemento.id === parseInt(idTask))
+        arrayTask.splice(indice, 1)
+    })
+    return { rowAffect: 1 };
+  }
 }
 
 module.exports = TaskRepository;
