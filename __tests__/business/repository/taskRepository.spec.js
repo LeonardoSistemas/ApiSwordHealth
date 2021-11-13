@@ -32,6 +32,14 @@ describe("TaskRepository", () => {
 
       expect(result).toBeDefined();
     });
+
+    it("deleteTask | Ensure that the task was successfully deleted", async () => {
+      const idTask = 3;
+
+      const result = await taskRepository.deleteTask(idTask);
+
+      expect(result).toBeDefined();
+    });
   });
 
   describe("- ERROR CASES -", () => {
@@ -65,6 +73,14 @@ describe("TaskRepository", () => {
 
       const result = await taskRepository.updateTask(objectTask);
       expect(result).toBe(new NotFoundError("Update Task Repository | no tasks found for this id").message);
+      expect(new NotFoundError().status).toBe(404);
+
+    });
+
+    it("deleteTask | Ensure idtask is empty", async () => {
+
+      const result = await taskRepository.deleteTask();
+      expect(result).toBe(new NotFoundError("Delete Task Repository | idTask value is invalid").message);
       expect(new NotFoundError().status).toBe(404);
 
     });
