@@ -12,5 +12,9 @@ routes.post("/task", (req, res, next) => {
     taskController.insertTask(req, res, next);
 });
 
+routes.put("/task/:id", (req, res, next) => {
+    taskController.updateTask(req, res, next);
+});
+
 
 module.exports = routes;
