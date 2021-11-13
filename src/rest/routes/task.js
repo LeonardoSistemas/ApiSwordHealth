@@ -16,5 +16,9 @@ routes.put("/task/:id", (req, res, next) => {
     taskController.updateTask(req, res, next);
 });
 
+routes.delete("/task/:id", (req, res, next) => {
+    taskController.deleteTask(req, res, next);
+});
+
 
 module.exports = routes;
