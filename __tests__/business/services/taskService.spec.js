@@ -73,6 +73,24 @@ describe("TaskService", () => {
       expect(result).toBe(taskRepositoryReturnMock);
     });
 
+    it("deleteTask | Ensure that the task was successfully deleted", async () => {
+      const idTask =  3;
+
+      const taskRepositoryReturnMock = {
+        rowAffect: 1
+      };
+
+      const createTaskRepositoryMock = () => taskRepositoryReturnMock;
+
+      jest.spyOn(
+        taskService.taskRepository,
+        "deleteTask")
+        .mockImplementationOnce(createTaskRepositoryMock);
+      const result = await taskService.deleteTask(idTask);
+
+      expect(result).toBe(taskRepositoryReturnMock);
+    });
+
   });
   describe("- ERROR CASES -", () => {
     it("insertTask | Ensure object validation failed", async () => {
@@ -109,5 +127,14 @@ describe("TaskService", () => {
       expect(new NotFoundError().status).toBe(404);
 
     });
+
+    it("deleteTask | Ensure idtask is empty", async () => {
+
+      const result = await taskService.deleteTask();
+      expect(result).toBe(new NotFoundError("Delete Task Services | idTask value is invalid").message);
+      expect(new NotFoundError().status).toBe(404);
+
+    });
+
   });
 });
