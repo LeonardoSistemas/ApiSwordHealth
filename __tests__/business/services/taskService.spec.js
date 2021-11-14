@@ -73,8 +73,29 @@ describe("TaskService", () => {
       expect(result).toBe(taskRepositoryReturnMock);
     });
 
+    it("completeTask | Ensure task is complete", async () => {
+
+      const objectTask = {
+        "id": 2,
+        "description": "Teste de alteração API - fila",
+        "complete": true
+      }
+      const returnCompleteTaskMock = {};
+      const completeTaskMock = () => returnCompleteTaskMock;
+
+      jest.spyOn(
+        taskService.sendMessageBroker,
+        "send")
+        .mockImplementationOnce(completeTaskMock);
+
+      const result = await taskService.completeTask(objectTask);
+      console.log("teste", result);
+      expect(result).toBeTruthy();
+
+    });
+
     it("deleteTask | Ensure that the task was successfully deleted", async () => {
-      const idTask =  3;
+      const idTask = 3;
 
       const taskRepositoryReturnMock = {
         rowAffect: 1
@@ -107,7 +128,7 @@ describe("TaskService", () => {
     it("insertTask | Ensure the description length is greater than 2500", async () => {
       const objectTask = {
         id: 3,
-        description : `Há pouco tempo, os ambientalistas reclamávamos da falta de espaço na mídia. Hoje o problema é inverso. Escreve-se e fala-se tanto sobre o assunto, que as pessoas nem lêem mais os artigos com a abertura "Nosso planeta passa por alterações gravíssimas, etc.". "Na era da informação, estamos todos desinformados", conforme li já onde não sei mais onde...
+        description: `Há pouco tempo, os ambientalistas reclamávamos da falta de espaço na mídia. Hoje o problema é inverso. Escreve-se e fala-se tanto sobre o assunto, que as pessoas nem lêem mais os artigos com a abertura "Nosso planeta passa por alterações gravíssimas, etc.". "Na era da informação, estamos todos desinformados", conforme li já onde não sei mais onde...
 
         Os artigos publicados neste início de ano oscilam entre duas correntes; Evaristo Miranda, da Embrapa, publicou um artigo no Estado de São Paulo, comparando quanta floresta havia há 8.000 anos, com quanta há hoje. A conclusão, é que a Europa, e não o Brasil, é a grande desmatadora, vindo de 7% para 0,1%. Este artigo ecoa o livro "Chutando a escada" de Ha-Joon Chang de Cambridge, que descreve como os países desenvolvidos, uma vez chegando lá, tentam impedir o desenvolvimento dos outros. Trocando em miúdos, parte do mundo desenvolveu-se antes, poluiu antes e agora quer dividir a poluição, mas não o desenvolvimento gerado por ela.
         
@@ -123,7 +144,7 @@ describe("TaskService", () => {
       const result = await taskService.insertTask(objectTask);
       expect(result).toBe(new BadRequest("Insert Task Services | the description size is too big").message);
       expect(new BadRequest().status).toBe(400);
-     
+
     });
 
     it("updateTask | Ensure object validation failed", async () => {
@@ -139,7 +160,7 @@ describe("TaskService", () => {
     it("updateTask | Ensure the description length is greater than 2500", async () => {
       const objectTask = {
         id: 2,
-        description : `Há pouco tempo, os ambientalistas reclamávamos da falta de espaço na mídia. Hoje o problema é inverso. Escreve-se e fala-se tanto sobre o assunto, que as pessoas nem lêem mais os artigos com a abertura "Nosso planeta passa por alterações gravíssimas, etc.". "Na era da informação, estamos todos desinformados", conforme li já onde não sei mais onde...
+        description: `Há pouco tempo, os ambientalistas reclamávamos da falta de espaço na mídia. Hoje o problema é inverso. Escreve-se e fala-se tanto sobre o assunto, que as pessoas nem lêem mais os artigos com a abertura "Nosso planeta passa por alterações gravíssimas, etc.". "Na era da informação, estamos todos desinformados", conforme li já onde não sei mais onde...
 
         Os artigos publicados neste início de ano oscilam entre duas correntes; Evaristo Miranda, da Embrapa, publicou um artigo no Estado de São Paulo, comparando quanta floresta havia há 8.000 anos, com quanta há hoje. A conclusão, é que a Europa, e não o Brasil, é a grande desmatadora, vindo de 7% para 0,1%. Este artigo ecoa o livro "Chutando a escada" de Ha-Joon Chang de Cambridge, que descreve como os países desenvolvidos, uma vez chegando lá, tentam impedir o desenvolvimento dos outros. Trocando em miúdos, parte do mundo desenvolveu-se antes, poluiu antes e agora quer dividir a poluição, mas não o desenvolvimento gerado por ela.
         
@@ -155,7 +176,7 @@ describe("TaskService", () => {
       const result = await taskService.updateTask(objectTask);
       expect(result).toBe(new BadRequest("Update Task Services | the description size is too big").message);
       expect(new BadRequest().status).toBe(400);
-     
+
     });
 
     it("updateTask | Ensure object validation failed", async () => {
