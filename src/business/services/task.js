@@ -1,9 +1,11 @@
 const { BadRequest, NotFoundError } = require("../../common/ExceptionHandler");
 const TaskRepository = require("../repository/task");
+const SendMessageBroker = require("./sendMessageBroker");
 
 class TaskService {
   constructor() {
     this.taskRepository = new TaskRepository();
+    this.sendMessageBroker = new SendMessageBroker();
   }
 
   async consultTask() {
@@ -40,6 +42,7 @@ class TaskService {
       return new NotFoundError("Update Task Services | no tasks found for this id").message;
 
     const resultUpdateTask = await this.taskRepository.updateTask(objectTask);
+    this.completeTask(objectTask);
     return resultUpdateTask;
   }
 
@@ -58,6 +61,13 @@ class TaskService {
     }
     return true
 
+  }
+
+  async completeTask(objectTask){
+    if(objectTask.complete)
+      this.sendMessageBroker.send(objectTask);
+
+    return true;
   }
 
   async deleteTask(idTask) {
