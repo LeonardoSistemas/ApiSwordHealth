@@ -35,7 +35,8 @@ class TaskController {
 
       let objectTask = {
         id: req.body.id,
-        description: req.body.description
+        description: req.body.description,
+        complete: req.body.complete
       }
       const resultUpdateTask = await this.taskService.updateTask(objectTask); 
 
