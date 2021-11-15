@@ -20,7 +20,8 @@ class TaskController {
 
       let objectTask = {
         id: req.body.id,
-        description: req.body.description
+        description: req.body.description,
+        userId: req.body.userId
       }
       const resultInsertTask = await this.taskService.insertTask(objectTask); 
 
