@@ -48,26 +48,34 @@ class TaskService {
 
   async completeTask(objectTask) {
 
-    const returnValidateObject = await this.validateObjectTask(objectTask);
+    const returnValidateObject = await this.validateObjectCompleteTask(objectTask);
     if (!returnValidateObject)
-      return new BadRequest("Update Task Services | the task object is not in a correct format").message;
+      return new BadRequest("Complete Task Services | the task object is not in a correct format").message;
 
     const returnValidateDescriptionLength = await this.validateDescriptionLength(objectTask);
     if (!returnValidateDescriptionLength)
-      return new BadRequest("Update Task Services | the description size is too big").message;
+      return new BadRequest("Complete Task Services | the description size is too big").message;
 
     const returnConsultTaskByID = await this.taskRepository.consultTaskByID(objectTask)
     if (!returnConsultTaskByID)
-      return new NotFoundError("Update Task Services | no tasks found for this id").message;
+      return new NotFoundError("Complete Task Services | no tasks found for this id").message;
 
-    const resultUpdateTask = await this.taskRepository.completeTask(objectTask);
+    const resultCompleteTask = await this.taskRepository.completeTask(objectTask);
     this.sendTaskMessageBroker(objectTask);
-    return resultUpdateTask;
+    return resultCompleteTask;
   }
 
   async validateObjectTask(objectTask) {
     const { description } = objectTask
     if (!description) {
+      return false
+    }
+    return true
+  }
+
+  async validateObjectCompleteTask(objectTask) {
+    const { description, complete, completiondate } = objectTask
+    if (!description || !complete || !completiondate) {
       return false
     }
     return true
