@@ -24,5 +24,13 @@ db.sequelize.sync({ force: true }).then(() => {
 });
 
 db.task = require("./task.model.js")(sequelize, Sequelize);
+db.user = require("./user.model.js")(sequelize, Sequelize);
+db.categoryUser = require("./categoryUser.model.js")(sequelize, Sequelize);
+
+db.categoryUser.hasOne(db.user);
+db.user.belongsTo(db.categoryUser, {foreignKey: 'categoryUserCategoryId'});
+
+db.user.hasOne(db.task);
+db.task.belongsTo(db.user, {foreignKey: 'userId'});
 
 module.exports = db;
