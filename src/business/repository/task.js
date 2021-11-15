@@ -1,6 +1,6 @@
 const { BadRequest, NotFoundError } = require("../../common/ExceptionHandler");
 
-let arrayTask = [{ id: 1, description: "Desenvolver API" }, { id: 2, description: "Desenvolver API Sword" }]
+let arrayTask = [{ id: 1, description: "Desenvolver API", complete:false }, { id: 2, description: "Desenvolver API Sword",complete:false }]
 class TaskRepository {
   constructor() {
 
@@ -56,6 +56,28 @@ class TaskRepository {
     })
     arrayTask.push(objectTask)
     return { rowAffect: 1 };
+  }
+
+  async completeTask(objectTask) {
+
+    const returnValidateObject = await this.validateObjectTask(objectTask);
+    if (!returnValidateObject)
+      return new BadRequest("Update Task Repository | the task object is not in a correct format").message;
+
+    const returnValidateDescriptionLength = await this.validateDescriptionLength(objectTask);
+    if (!returnValidateDescriptionLength)
+      return new BadRequest("Update Task Repository | the description size is too big").message;
+
+    const returnConsultTaskByID = await this.consultTaskByID(objectTask)
+    if (!returnConsultTaskByID)
+      return new NotFoundError("Update Task Repository | no tasks found for this id").message;
+
+    arrayTask.forEach((elemento) => {
+      if (elemento.id === objectTask.id)
+        elemento.complete = true
+    })
+    
+    return { rowAffect: 1};
   }
 
   async validateObjectTask(objectTask) {
