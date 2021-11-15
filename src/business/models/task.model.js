@@ -17,6 +17,10 @@ module.exports = (sequelize, Sequelize) => {
       completiondate: {
         type: Sequelize.STRING,
         allowNull: true,
+      },
+      userId: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
       }
     });
   
