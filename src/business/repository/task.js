@@ -1,6 +1,7 @@
 const { BadRequest, NotFoundError } = require("../../common/ExceptionHandler");
 const db = require("../models")
 const taskColletion = db.task;
+const userColletion = db.user
 
 class TaskRepository {
   constructor() {
@@ -8,7 +9,13 @@ class TaskRepository {
   }
 
   async consultTask() {
-    let dataTask = await taskColletion.findAll();
+    let dataTask = await taskColletion.findAll({
+      attributes:['description', 'complete'],    
+      include:[{
+        model: userColletion,
+        attributes:['name']
+      }]
+    });
     return dataTask;
   }
 
