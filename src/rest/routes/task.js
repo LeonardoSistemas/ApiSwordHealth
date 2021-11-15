@@ -7,6 +7,7 @@ const taskController = new TaskController();
 const {    
     PostCreateTask
     , PutUpdateTask
+    ,PutCompleteTask
   } = require("../request-validation/request-validation");
 
 routes.get("/task", (req, res, next) => {
@@ -19,6 +20,10 @@ routes.post("/task", PostCreateTask, (req, res, next) => {
 
 routes.put("/task/:id", PutUpdateTask, (req, res, next) => {
     taskController.updateTask(req, res, next);
+});
+
+routes.put("/task/complete/:id", PutCompleteTask, (req, res, next) => {
+    taskController.completeTask(req, res, next);
 });
 
 routes.delete("/task/:id", (req, res, next) => {
