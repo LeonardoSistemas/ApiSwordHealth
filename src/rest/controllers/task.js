@@ -46,6 +46,23 @@ class TaskController {
     } catch (error) { next(error); }
   }
 
+  async completeTask (req, res, next) {
+    try {
+
+      let objectTask = {
+        id: req.body.id,
+        description: req.body.description,
+        complete: req.body.complete,
+        completiondate: req.body.completiondate
+      }
+      const resultUpdateTask = await this.taskService.completeTask(objectTask); 
+
+      res.send(resultUpdateTask);
+
+      next();
+    } catch (error) { next(error); }
+  }
+
   async deleteTask (req, res, next) {
     try {
       const idTask = req.params.id      
