@@ -1,4 +1,7 @@
 const { BadRequest } = require("../../common/ExceptionHandler");
+const db = require("../models")
+const userColletion = db.user;
+const categoryColletion = db.categoryUser;
 
 class UserRepository {
   constructor () {
@@ -7,7 +10,14 @@ class UserRepository {
 
   async consultUser () {
     
-    return [{id:1, name:"Leonardo"},{id:2, name:"João"}];
+   categoryColletion.findAll({  
+      attributes:['description', 'permissionToViewTask'],    
+      include:[{
+        model: userColletion,
+        attributes:['name']
+      }]
+    }).then(user => console.table(user))
+
   }
 }
 
