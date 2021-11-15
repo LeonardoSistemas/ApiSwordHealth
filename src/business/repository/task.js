@@ -60,17 +60,17 @@ class TaskRepository {
 
   async completeTask(objectTask) {
 
-    const returnValidateObject = await this.validateObjectTask(objectTask);
+    const returnValidateObject = await this.validateObjectCompleteTask(objectTask);
     if (!returnValidateObject)
-      return new BadRequest("Update Task Repository | the task object is not in a correct format").message;
+      return new BadRequest("Complete Task Repository | the task object is not in a correct format").message;
 
     const returnValidateDescriptionLength = await this.validateDescriptionLength(objectTask);
     if (!returnValidateDescriptionLength)
-      return new BadRequest("Update Task Repository | the description size is too big").message;
+      return new BadRequest("Complete Task Repository | the description size is too big").message;
 
     const returnConsultTaskByID = await this.consultTaskByID(objectTask)
     if (!returnConsultTaskByID)
-      return new NotFoundError("Update Task Repository | no tasks found for this id").message;
+      return new NotFoundError("Complete Task Repository | no tasks found for this id").message;
 
     arrayTask.forEach((elemento) => {
       if (elemento.id === objectTask.id)
@@ -83,6 +83,14 @@ class TaskRepository {
   async validateObjectTask(objectTask) {
     const { description } = objectTask
     if (!description) {
+      return false
+    }
+    return true
+  }
+
+  async validateObjectCompleteTask(objectTask) {
+    const { description, complete, completiondate } = objectTask
+    if (!description || !complete || !completiondate) {
       return false
     }
     return true
