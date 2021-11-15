@@ -1,24 +1,20 @@
 const { BadRequest, NotFoundError } = require("../../common/ExceptionHandler");
+const db = require("../models")
+const taskColletion = db.task;
 
-let arrayTask = [{ id: 1, description: "Desenvolver API", complete:false }, { id: 2, description: "Desenvolver API Sword",complete:false }]
 class TaskRepository {
   constructor() {
 
   }
 
   async consultTask() {
-
-    return arrayTask;
+    let dataTask = await taskColletion.findAll();
+    return dataTask;
   }
 
   async consultTaskByID(objectTask) {
 
-    let findTask = false;
-
-    arrayTask.forEach((elemento) => {
-      if (elemento.id === objectTask.id)
-        findTask = true
-    })
+    let findTask = taskColletion.findByPk(objectTask.id)
     return findTask;
   }
 
@@ -31,8 +27,8 @@ class TaskRepository {
     const returnValidateDescriptionLength = await this.validateDescriptionLength(objectTask);
     if (!returnValidateDescriptionLength)
       return new BadRequest("Insert Task Repository | the description size is too big").message;
-
-    arrayTask.push(objectTask)
+    
+    taskColletion.create(objectTask);
     return { rowAffect: 1 };
   }
 
@@ -50,12 +46,8 @@ class TaskRepository {
     if (!returnConsultTaskByID)
       return new NotFoundError("Update Task Repository | no tasks found for this id").message;
 
-    arrayTask.forEach((elemento, indice) => {
-      if (elemento.id === objectTask.id)
-        arrayTask.splice(indice, 1)
-    })
-    arrayTask.push(objectTask)
-    return { rowAffect: 1 };
+    let returnUpdate = await taskColletion.update(objectTask, { where: { id: objectTask.id } })
+    return { rowAffect: returnUpdate[0] };
   }
 
   async completeTask(objectTask) {
@@ -72,12 +64,8 @@ class TaskRepository {
     if (!returnConsultTaskByID)
       return new NotFoundError("Complete Task Repository | no tasks found for this id").message;
 
-    arrayTask.forEach((elemento) => {
-      if (elemento.id === objectTask.id)
-        elemento.complete = true
-    })
-    
-    return { rowAffect: 1};
+    let returnComplete = await taskColletion.update(objectTask, { where: { id: objectTask.id } })
+    return { rowAffect: returnComplete[0] };
   }
 
   async validateObjectTask(objectTask) {
@@ -110,11 +98,8 @@ class TaskRepository {
     if (!idTask)
       return new BadRequest("Delete Task Repository | idTask value is invalid").message;
 
-    arrayTask.forEach((elemento, indice) => {
-      if (elemento.id === parseInt(idTask))
-        arrayTask.splice(indice, 1)
-    })
-    return { rowAffect: 1 };
+    let returnDelete = await taskColletion.destroy({ where: { id:idTask } })
+    return { rowAffect: returnDelete[0] };
   }
 }
 
