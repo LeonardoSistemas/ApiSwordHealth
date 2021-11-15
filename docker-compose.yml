@@ -1,0 +1,22 @@
+version: '3'
+
+services: 
+    desafio-sword:
+        image: leonardosistemas/desafio-sword:latest
+        ports: 
+            - '9075:9075'
+        
+    mysqlsrv:
+        image: mysql:5.7
+        environment:
+          MYSQL_ROOT_PASSWORD: "MySql2021!"
+          MYSQL_DATABASE: "desafiosword"
+        ports:
+          - "3306:3306"        
+        
+
+    adminer:
+        image: adminer
+        ports:
+          - 8080:8080
+        
