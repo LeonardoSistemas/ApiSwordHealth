@@ -1,16 +1,38 @@
-const { BadRequest, NotFoundError } = require("../../common/ExceptionHandler");
+const { BadRequest, NotFoundError, UnauthorizedError } = require("../../common/ExceptionHandler");
 const TaskRepository = require("../repository/task");
 const SendMessageBroker = require("./sendMessageBroker");
+const UserRepository = require("../repository/user");
 
 class TaskService {
   constructor() {
     this.taskRepository = new TaskRepository();
     this.sendMessageBroker = new SendMessageBroker();
+    this.userRepository = new UserRepository();
   }
 
-  async consultTask() {
-    const resultConsultTask = await this.taskRepository.consultTask();
-    return resultConsultTask;
+  async consultTask(userId) {
+    const resultCheckQueryPermission = await this.checkQueryPermission(userId);
+    if (resultCheckQueryPermission) {
+      const resultConsultTask = await this.taskRepository.consultAllTask();
+      return resultConsultTask;
+    }
+    else {
+      const resultConsultTask = await this.taskRepository.consultUserTask(userId);
+      return resultConsultTask;
+    }
+
+  }
+
+  async checkQueryPermission(userId) {
+
+    const resultConsultPermissionUser = await this.userRepository.consultUserById(userId);
+    if (!resultConsultPermissionUser)
+      return false;
+
+    if (resultConsultPermissionUser[0].permissionToViewTask === 0)
+      return false;
+    else
+      return true;
   }
 
   async insertTask(objectTask) {
@@ -90,22 +112,28 @@ class TaskService {
 
   }
 
-  async sendTaskMessageBroker(objectTask){
-    if(objectTask.complete)
+  async sendTaskMessageBroker(objectTask) {
+    if (objectTask.complete)
       this.sendMessageBroker.send(objectTask);
 
     return true;
   }
 
-  async deleteTask(idTask) {
+  async deleteTask(idTask, userId) {
 
     if (!idTask)
       return new NotFoundError("Delete Task Services | idTask value is invalid").message;
-    const resultDeleteTask = await this.taskRepository.deleteTask(parseInt(idTask));
-    return resultDeleteTask;
+
+    const resultCheckQueryPermission = await this.checkQueryPermission(userId)
+    if (resultCheckQueryPermission) {
+      const resultDeleteTask = await this.taskRepository.deleteTask(parseInt(idTask));
+      return resultDeleteTask;
+    }
+    else
+      return new UnauthorizedError("Delete Task Services | Unauthorized").message;
   }
 
-  
+
 }
 
 module.exports = TaskService;
