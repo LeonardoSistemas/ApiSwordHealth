@@ -2,118 +2,13 @@ const { BadRequest, NotFoundError } = require("../../../src/common/ExceptionHand
 const TaskService = require("../../../src/business/services/task");
 const taskService = new TaskService();
 
+const request = require("supertest");
+const app = require("../../../src/app");
+
+require("../../mocks/taskRepository");
+
 describe("TaskService", () => {
-  describe("- SUCESS CASES -", () => {
-    it("consultTask | Ensure that the task was successfully consulted", async () => {
-      const taskRepositoryReturnMock = {
-        id: 1,
-        description: "Desenvolver API"
-      };
-
-      const createTaskRepositoryMock = () => taskRepositoryReturnMock;
-
-      jest.spyOn(
-        taskService.taskRepository,
-        "consultTask")
-        .mockImplementationOnce(createTaskRepositoryMock);
-      const result = await taskService.consultTask();
-
-      expect(result).toBe(taskRepositoryReturnMock);
-    });
-
-    it("insertTask | Ensure that the task was successfully inserted", async () => {
-      const objectTask = {
-        id: 3,
-        description: "Test API"
-      };
-
-      const taskRepositoryReturnMock = {
-        rowAffect: 1
-      };
-
-      const createTaskRepositoryMock = () => taskRepositoryReturnMock;
-
-      jest.spyOn(
-        taskService.taskRepository,
-        "insertTask")
-        .mockImplementationOnce(createTaskRepositoryMock);
-      const result = await taskService.insertTask(objectTask);
-
-      expect(result).toBe(taskRepositoryReturnMock);
-    });
-
-    it("udpateTask | Ensure that the task was successfully changed", async () => {
-      const objectTask = {
-        id: 3,
-        description: "Test API Success"
-      };
-
-      const taskRepositoryReturnMock = {
-        rowAffect: 1
-      };
-
-      const createTaskRepositoryMock = () => taskRepositoryReturnMock;
-
-      jest.spyOn(
-        taskService.taskRepository,
-        "updateTask")
-        .mockImplementationOnce(createTaskRepositoryMock);
-
-      const returnTaskByIDMock = {};
-
-      const consultTaskRepositoryByIDMock = () => returnTaskByIDMock;
-
-      jest.spyOn(
-        taskService.taskRepository,
-        "consultTaskByID")
-        .mockImplementationOnce(consultTaskRepositoryByIDMock);
-
-      const result = await taskService.updateTask(objectTask);
-
-      expect(result).toBe(taskRepositoryReturnMock);
-    });
-
-    it("completeTask | Ensure task is complete", async () => {
-
-      const objectTask = {
-        "id": 2,
-        "description": "Teste de alteração API - fila",
-        "complete": true,
-        "completiondate" : "15/11/2021"
-      }
-      const returnCompleteTaskMock = {};
-      const completeTaskMock = () => returnCompleteTaskMock;
-
-      jest.spyOn(
-        taskService.sendMessageBroker,
-        "send")
-        .mockImplementationOnce(completeTaskMock);
-
-      const result = await taskService.completeTask(objectTask);
-      console.log("teste", result);
-      expect(result).toBeTruthy();
-
-    });
-
-    it("deleteTask | Ensure that the task was successfully deleted", async () => {
-      const idTask = 3;
-
-      const taskRepositoryReturnMock = {
-        rowAffect: 1
-      };
-
-      const createTaskRepositoryMock = () => taskRepositoryReturnMock;
-
-      jest.spyOn(
-        taskService.taskRepository,
-        "deleteTask")
-        .mockImplementationOnce(createTaskRepositoryMock);
-      const result = await taskService.deleteTask(idTask);
-
-      expect(result).toBe(taskRepositoryReturnMock);
-    });
-
-  });
+    
   describe("- ERROR CASES -", () => {
     it("insertTask | Ensure object validation failed", async () => {
       const objectTask = {
@@ -178,19 +73,7 @@ describe("TaskService", () => {
       expect(result).toBe(new BadRequest("Update Task Services | the description size is too big").message);
       expect(new BadRequest().status).toBe(400);
 
-    });
-
-    it("updateTask | Ensure object validation failed", async () => {
-      const objectTask = {
-        id: 4,
-        description: "Test API"
-      };
-
-      const result = await taskService.updateTask(objectTask);
-      expect(result).toBe(new NotFoundError("Update Task Services | no tasks found for this id").message);
-      expect(new NotFoundError().status).toBe(404);
-
-    });
+    });   
 
 
     it("completeTask | Ensure object validation failed", async () => {
@@ -227,20 +110,7 @@ describe("TaskService", () => {
       expect(new BadRequest().status).toBe(400);
 
     });
-
-    it("completeTask | Ensure object validation failed", async () => {
-      const objectTask = {
-        id: 4,
-        description: "Test API",
-        complete: true,
-        completiondate: "15/11/2021"
-      };
-
-      const result = await taskService.completeTask(objectTask);
-      expect(result).toBe(new NotFoundError("Complete Task Services | no tasks found for this id").message);
-      expect(new NotFoundError().status).toBe(404);
-
-    });
+    
 
     it("deleteTask | Ensure idtask is empty", async () => {
 

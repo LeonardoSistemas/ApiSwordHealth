@@ -29,8 +29,7 @@ class UserRepository {
          attributes:['name'],
          where : {id : userId}
        }]
-     }).then((user) => {
-       
+     }).then((user) => {       
        return user.map((r) => {
          return r.dataValues;
        });
