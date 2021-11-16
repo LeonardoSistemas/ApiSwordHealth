@@ -10,6 +10,11 @@ class UserService {
     const resultConsultUser = await this.userRepository.consultUser();
     return resultConsultUser;
   }
+
+  async consultUserById(userId) {
+    const resultConsultUser = await this.userRepository.consultUserById(userId);
+    return resultConsultUser;
+  }
 }
 
 module.exports = UserService;
