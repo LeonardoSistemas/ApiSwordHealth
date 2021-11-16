@@ -8,12 +8,36 @@ class TaskRepository {
 
   }
 
-  async consultTask() {
+  async consultAllTask() {
     let dataTask = await taskColletion.findAll({
       attributes:['description', 'complete'],    
       include:[{
         model: userColletion,
         attributes:['name']
+      }]
+    });
+    return dataTask;
+  }
+
+  async consultUserTask(userId) {
+    let dataTask = await taskColletion.findAll({
+      attributes:['description', 'complete'],    
+      include:[{
+        model: userColletion,
+        attributes:['name'],
+        where : {id : userId}
+      }]
+    });
+    return dataTask;
+  }
+
+  async consultTaskByUserId(userId) {
+    let dataTask = await taskColletion.findAll({
+      attributes:['description', 'complete'],    
+      include:[{
+        model: userColletion,
+        attributes:['name'],
+        where : {id : userId}
       }]
     });
     return dataTask;
