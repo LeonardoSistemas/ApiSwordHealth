@@ -11,8 +11,7 @@ module.exports = {
   collectCoverageFrom: [
     "<rootDir>/src/business/services/*.js",
     "<rootDir>/src/business/services/*/*.js",
-    "<rootDir>/src/business/repository/*.js",
-    "<rootDir>/src/business/repository/*/*.js",
+    
     "<rootDir>/src/rest/controllers/*/*.js"],
   coverageDirectory: "coverage",
   coverageProvider: "v8",
