@@ -19,6 +19,24 @@ class UserRepository {
     }).then(user => console.table(user))
 
   }
+
+  async consultUserById (userId) {
+    
+    return categoryColletion.findAll({  
+       attributes:['description', 'permissionToViewTask'],    
+       include:[{
+         model: userColletion,
+         attributes:['name'],
+         where : {id : userId}
+       }]
+     }).then((user) => {
+       
+       return user.map((r) => {
+         return r.dataValues;
+       });
+     })
+ 
+   }
 }
 
 module.exports = UserRepository;
