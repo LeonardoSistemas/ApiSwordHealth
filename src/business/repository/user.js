@@ -8,15 +8,24 @@ class UserRepository {
     
   }
 
+  async insertUser (objectUser) {
+    
+    userColletion.create(objectUser);
+    return { rowAffect: 1 };
+ 
+   }
+
   async consultUser () {
     
-   categoryColletion.findAll({  
-      attributes:['description', 'permissionToViewTask'],    
+   const resultConsultUser = userColletion.findAll({  
+      attributes:['name'],    
       include:[{
-        model: userColletion,
-        attributes:['name']
+        model: categoryColletion,
+        attributes:['description', 'permissionToViewTask']
       }]
-    }).then(user => console.table(user))
+    })
+
+    return resultConsultUser;
 
   }
 

@@ -6,6 +6,11 @@ class UserService {
     this.userRepository = new UserRepository();
   }  
 
+  async insertUser (objectUser) {
+    const resultConsultUser = await this.userRepository.insertUser(objectUser);
+    return resultConsultUser;
+  }
+
   async consultUser () {
     const resultConsultUser = await this.userRepository.consultUser();
     return resultConsultUser;
