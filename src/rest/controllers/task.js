@@ -7,7 +7,7 @@ class TaskController {
 
   async consultTask (req, res, next) {
     try {
-      const resultConsultTask = await this.taskService.consultTask(); 
+      const resultConsultTask = await this.taskService.consultTask(req.params.userId); 
 
       res.send(resultConsultTask);
 
@@ -66,8 +66,9 @@ class TaskController {
 
   async deleteTask (req, res, next) {
     try {
-      const idTask = req.params.id      
-      const resultDeleteTask = await this.taskService.deleteTask(parseInt(idTask)); 
+      const idTask = req.params.id
+      const userId = req.body.userId      
+      const resultDeleteTask = await this.taskService.deleteTask(parseInt(idTask), parseInt(userId)); 
 
       res.send(resultDeleteTask);
 
