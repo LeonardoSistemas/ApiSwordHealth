@@ -5,8 +5,6 @@ const taskService = new TaskService();
 const request = require("supertest");
 const app = require("../../../src/app");
 
-require("../../mocks/taskRepository");
-
 describe("TaskService", () => {
     
   describe("- ERROR CASES -", () => {
