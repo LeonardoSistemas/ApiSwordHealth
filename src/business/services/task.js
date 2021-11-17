@@ -78,12 +78,13 @@ class TaskService {
     if (!returnValidateDescriptionLength)
       return new BadRequest("Complete Task Services | the description size is too big").message;
 
-    const returnConsultTaskByID = await this.taskRepository.consultTaskByID(objectTask)
+    const resultCompleteTask = await this.taskRepository.completeTask(objectTask);
+
+    const returnConsultTaskByID = await this.taskRepository.queryTaskToSendToMessageBroker(objectTask)
+    
     if (!returnConsultTaskByID)
       return new NotFoundError("Complete Task Services | no tasks found for this id").message;
-
-    const resultCompleteTask = await this.taskRepository.completeTask(objectTask);
-    this.sendTaskMessageBroker(objectTask);
+    this.sendTaskMessageBroker(JSON.stringify(returnConsultTaskByID));
     return resultCompleteTask;
   }
 
@@ -113,7 +114,8 @@ class TaskService {
   }
 
   async sendTaskMessageBroker(objectTask) {
-    if (objectTask.complete)
+    const obecjtMessageBroker = JSON.parse(objectTask)
+    if (obecjtMessageBroker[0].task.complete === 1)
       this.sendMessageBroker.send(objectTask);
 
     return true;
