@@ -1,7 +1,11 @@
 const RabbitPublisher = require('../../proxyRMQ/connection')
 
 class Publisher {
-  constructor() { }
+  constructor() {
+
+    RabbitPublisher.instance();
+
+   }
 
   async send(objmessage) {  
     await RabbitPublisher.instance().sendMessage(objmessage)
