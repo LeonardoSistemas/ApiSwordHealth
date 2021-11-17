@@ -5,6 +5,16 @@ services:
         image: leonardosistemas/desafio-sword:latest
         ports: 
             - '9075:9075'
+        depends_on:
+            - mysqlsrv
+            - rabbitmq
+    desafio-sword-notification:
+        image: leonardosistemas/desafio-sword-notification:latest
+        ports: 
+            - '9076:9076'
+        depends_on:
+            - desafio-sword
+            - rabbitmq
         
     mysqlsrv:
         image: mysql:5.7
@@ -12,11 +22,21 @@ services:
           MYSQL_ROOT_PASSWORD: "MySql2021!"
           MYSQL_DATABASE: "desafiosword"
         ports:
-          - "3306:3306"        
+          - "3306:3306"
         
 
     adminer:
         image: adminer
         ports:
           - 8080:8080
+        depends_on:
+          - mysqlsrv
+
+    rabbitmq:
+        image: rabbitmq:3-management
+        ports:          
+          - '5672:5672'
+          - '15672:15672'
+        environment:
+          - RABBITMQ_SECURE_PASSWORD=yes
         
