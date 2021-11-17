@@ -1,5 +1,5 @@
 module.exports = {
-    HOST: "127.0.0.1",
+    HOST: "mysqlsrv",
     USER: "root",
     PASSWORD: "MySql2021!",
     DB: "desafiosword",
