@@ -49,6 +49,22 @@ class TaskRepository {
     return findTask;
   }
 
+  async queryTaskToSendToMessageBroker(objectTask) {
+
+    return userColletion.findAll({
+      attributes:['name'],    
+      include:[{
+        model: taskColletion,
+        attributes:['description', 'complete', 'completiondate'],
+        where : {id : objectTask.id}
+      }]
+    }).then((task) => {
+      return task.map((r) =>{
+        return r.dataValues;
+      })
+    });
+  }
+
   async insertTask(objectTask) {
 
     const returnValidateObject = await this.validateObjectTask(objectTask);
